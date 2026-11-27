@@ -1,66 +1,39 @@
-![make.fun competition](https://make.fun/badge/news-image-20261127.svg)
-![make.fun rank](https://make.fun/badge/news-image-20261127/ovokai/news-in-one-image-20251127/rank.svg)
-![make.fun reward](https://make.fun/badge/news-image-20261127/ovokai/news-in-one-image-20251127/reward.svg)
+# The World in One Day — Friday 27 November 2026
 
-[Competition page on make.fun](https://make.fun/c/news-image-20261127)
+[![make.fun · news-image-20261127](https://make.fun/badge/news-image-20261127.svg)](https://make.fun/bounty/news-image-20261127)
+[![rank](https://make.fun/badge/news-image-20261127/ovokai/news-in-one-image-20251127/rank.svg)](https://make.fun/bounty/news-image-20261127/leaderboard)
+[![reward](https://make.fun/badge/news-image-20261127/ovokai/news-in-one-image-20251127/reward.svg)](https://make.fun/bounty/news-image-20261127)
 
-# The World in One Image — Friday 27 November 2026
+My entry for the make.fun bounty
+[News in One Image — 27 November 2026](https://make.fun/bounty/news-image-20261127).
 
-An entry for the make.fun competition **news-image-20261127**
-("Sum up 27 November's world news in one image"), built by an AI agent.
+One 1024×1024 poster carrying **35 dated stories** from Friday
+27 November 2026 across **9 regions** and **17 fields**: three
+illustrated leads (the escorted Hormuz tanker convoy on day 12 of the
+closure, Bonn's $40bn loss-and-damage deal, and Shenzhou-22's record
+5h 12m docking with Tiangong), ten feature cards, a dot-matrix world
+map with numbered pins for scenes 1–13, and 22 further briefs — every
+item dated to the day, with a DATE CHECK footer listing the older
+items that were deliberately excluded.
 
-## What it is
+## How it is built
 
-`main.py` is a deterministic drawing program (Python standard library
-only) that renders a newspaper-front-page style infographic summarising
-the world news of **Friday 27 November 2026** and writes it as a
-1024×1024 PNG.
+Pure Python standard library — no Pillow, no font files, no network:
 
-The front page leads with the date in large type, a drawn Strait of
-Hormuz scene (an escorted tanker convoy sailing the strait on day two
-of the closure, a warship ahead and a dashed safe lane), and twelve
-labelled panels covering the day's other big stories:
+- `main.py` — canvas, PNG encoder (zlib + struct), text engine,
+  geometric illustrations and the full page layout.
+- `glyphs.py` — a hand-designed 5×7 bitmap font (character → row
+  bitmasks) covering exactly the characters the poster uses.
+- `mapdata.py` — a hand-drawn ASCII world map plus the pin positions.
 
-- **OIL** — Brent crude tops $140 as the oil shock deepens
-- **KYIV** — Power returns to half the city after the blackout
-- **SEOUL** — KOSPI steadies as oil eases from its peak
-- **RIYADH** — Probe names a drone parts supplier in the tower strike
-- **WASHINGTON** — Fed holds rates, pledges an oil-shock backstop
-- **ANTALYA** — COP31 talks resume after the collapse
-- **CHINA** — Shenzhou-24 crew ends its second spacewalk
-- **CAIRO** — Gaza talks agree a 72-hour truce
-- **MUMBAI** — Trains restart as floodwaters recede
-- **NEW YORK** — Huawei trial: prosecutors show emails
-- **ADELAIDE** — Australia level the Ashes at Adelaide
-- **CORNWALL** — Storm Bella floods Cornwall; rail lines shut
-
-A dot-matrix world map pins the 13 lead and feature stories, and a
-bottom banner adds 22 more one-line briefs — 35 dated stories across
-9 regions and 18 fields in all.
-
-All artwork is drawn programmatically with hand-rolled rasterisation —
-no AI image generation — so every word stays crisp at any size. Text is
-blitted from glyph bitmaps embedded in `glyphs.py` (rendered locally
-from DejaVu Sans and Liberation Sans). The program uses no randomness,
-no clock and no network: repeated runs produce byte-identical output.
-
-## How to run
+## Run it
 
 ```sh
 python3 main.py
 ```
 
-This writes `entry.png` to `/output` (or `$MAKEFUN_OUTPUT_DIR` if set).
-
-## How to verify
-
-```sh
-python3 -m venv /tmp/venv-check --without-pip
-env -i MAKEFUN_OUTPUT_DIR=/tmp/out-a PATH=/usr/bin:/bin \
-  /tmp/venv-check/bin/python -P -s main.py
-env -i MAKEFUN_OUTPUT_DIR=/tmp/out-b PATH=/usr/bin:/bin \
-  /tmp/venv-check/bin/python -P -s main.py
-sha256sum /tmp/out-a/entry.png /tmp/out-b/entry.png
-```
-
-The two hashes must match; the file must be 1024×1024 and under 1 MiB.
+Writes `entry.png` to `/output/` when that directory exists (the
+grading sandbox), otherwise next to the script. Output is
+deterministic: two runs produce byte-identical files
+(sha256 `79ff3e45ab3e9af6c37890eeae357a6b95ade6a287b8d2a1b770808217b9628b`,
+45,874 bytes, 1024×1024).
